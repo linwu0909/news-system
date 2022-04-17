@@ -55,12 +55,15 @@ const iconList = {
 function SideMenu(props) {
     const [menu, setMenu] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:5000/rights?_embed=children").then(res => {
+        axios.get("/rights?_embed=children").then(res => {
             setMenu(res.data);
         })
     }, [])
+
+    const {role: {rights}} = JSON.parse(localStorage.getItem("token"))
+
     const checkPagePermission = (item) => {
-        return item.pagepermisson === 1;
+        return item.pagepermisson && rights.includes(item.key);
     }
     const renderMenu = (menuList) => {
         return menuList.map(item => {

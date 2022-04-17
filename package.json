@@ -1,6 +1,6 @@
 {
   "name": "news-system",
-  "version": "0.1.0",
+  "version": "1.1",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "5.11.9",
@@ -8,9 +8,14 @@
     "@testing-library/user-event": "12.8.3",
     "antd": "4.14.0",
     "axios": "0.21.4",
+    "draft-js": "0.9.1",
+    "draftjs-to-html": "0.9.1",
+    "nprogress": "0.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-draft-wysiwyg": "1.14.5",
     "react-scripts": "4.0.3",
+    "react-tsparticles": "1.42.4",
     "sass": "1.32.8",
     "web-vitals": "1.1.1"
   },

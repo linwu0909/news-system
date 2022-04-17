@@ -16,22 +16,32 @@ export default function UserList() {
     const addForm = useRef(null);
     const updateForm = useRef(null);
 
-    useEffect(() => {
-        axios.get('http://localhost:5000/users?_expand=role').then(res => {
-            const list = res.data;
-            setDataSource(list)
-        })
-    },[])
+    const {roleId,region,username} = JSON.parse(localStorage.getItem("token"))
 
     useEffect(() => {
-        axios.get('http://localhost:5000/regions').then(res => {
+        const roleObj = {
+            "1": "superadmin",
+            "2": "admin",
+            "3": "editor"
+        }
+        axios.get('/users?_expand=role').then(res => {
+            const list = res.data;
+            setDataSource(roleObj[roleId] === "superadmin" ? list: [
+                ...list.filter(item => item.username === username),
+                ...list.filter(item => item.region === region && roleObj[item.roleId] === "editor")
+            ])
+        })
+    },[roleId, region, username])
+
+    useEffect(() => {
+        axios.get('/regions').then(res => {
             const list = res.data;
             setRegionList(list)
         })
     },[])
 
     useEffect(() => {
-        axios.get('http://localhost:5000/roles').then(res => {
+        axios.get('/roles').then(res => {
             const list = res.data;
             setRoleList(list)
         })
@@ -112,7 +122,7 @@ export default function UserList() {
     const handleChange = (item) => {
         item.roleState = !item.roleState;
         setDataSource([...dataSource])
-        axios.patch(`http://localhost:5000/users/${item.id}`, {
+        axios.patch(`/users/${item.id}`, {
             roleState: item.roleState
         })
     }
@@ -129,7 +139,7 @@ export default function UserList() {
     }
     const deleteMethod = (item) => {
         setDataSource(dataSource.filter(data=>data.id!==item.id))
-        axios.delete(`http://localhost:5000/users/${item.id}`)
+        axios.delete(`/users/${item.id}`)
     }
     const addFormOk = () => {
         addForm.current.validateFields().then(value => {
@@ -139,7 +149,7 @@ export default function UserList() {
 
             addForm.current.resetFields()
             //post到后端，生成id，再设置 datasource, 方便后面的删除和更新
-            axios.post(`http://localhost:5000/users`, {
+            axios.post(`/users`, {
                 ...value,
                 "roleState": true,
                 "default": false,
@@ -172,7 +182,7 @@ export default function UserList() {
             }))
             setIsUpdateDisabled(!isUpdateDisabled)
 
-            axios.patch(`http://localhost:5000/users/${current.id}`,value)
+            axios.patch(`/users/${current.id}`,value)
         })
     }
 
