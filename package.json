@@ -1,6 +1,6 @@
 {
   "name": "news-system",
-  "version": "1.1",
+  "version": "1.2",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "5.11.9",
@@ -10,6 +10,7 @@
     "axios": "0.21.4",
     "draft-js": "0.9.1",
     "draftjs-to-html": "0.9.1",
+    "html-to-draftjs": "1.5.0",
     "nprogress": "0.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
