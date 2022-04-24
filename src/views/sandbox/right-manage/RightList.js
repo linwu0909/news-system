@@ -15,7 +15,7 @@ export default function RightList() {
             })
             setDataSource(list)
         })
-    })
+    },[])
     const columns = [
         {
             title: 'ID',

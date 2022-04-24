@@ -4,6 +4,7 @@ import {UserOutlined} from '@ant-design/icons';
 import './index.css';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
+import {connect} from "react-redux";
 
 const {Sider} = Layout;
 const { SubMenu } = Menu
@@ -54,6 +55,7 @@ const iconList = {
 }
 function SideMenu(props) {
     const [menu, setMenu] = useState([]);
+
     useEffect(() => {
         axios.get("/rights?_embed=children").then(res => {
             setMenu(res.data);
@@ -65,6 +67,7 @@ function SideMenu(props) {
     const checkPagePermission = (item) => {
         return item.pagepermisson && rights.includes(item.key);
     }
+
     const renderMenu = (menuList) => {
         return menuList.map(item => {
             if (item.children && item.children.length && checkPagePermission(item)) {
@@ -78,10 +81,12 @@ function SideMenu(props) {
             }>{item.title}</Menu.Item>
         })
     }
+
     const selectKeys = [props.location.pathname];
     const openKeys = ['/'+props.location.pathname.split('/')[1]]
+
     return (
-        <Sider trigger={null} collapsible>
+        <Sider trigger={null} collapsible collapsed={props.isCollapsed}>
             <div style={{display:"flex", height: "100%", "flexDirection": "column"}}>
                 <div className="logo">全球新闻发布管理系统</div>
                 <div style={{flex: 1, "overflow": "auto"}}>
@@ -94,4 +99,9 @@ function SideMenu(props) {
         </Sider>
     )
 }
-export default withRouter(SideMenu)
+
+const mapStateToProps = ({CollApsedReducer: {isCollapsed}}) => ({
+    isCollapsed
+})
+
+export default connect(mapStateToProps)(withRouter(SideMenu))
